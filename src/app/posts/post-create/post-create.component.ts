@@ -25,7 +25,7 @@ export class PostCreateComponent implements OnInit {
       form.value.title,
       form.value.content
     );
-
+    form.resetForm();
   }
 
   ngOnInit() {
