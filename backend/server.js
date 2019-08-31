@@ -1,3 +1,5 @@
+// npm run server
+
 const app = require("./app");
 const debug = require("debug")("node-angular");
 const http = require("http");
@@ -16,7 +18,7 @@ const normalizePort = val => {
   }
 
   return false;
-}; 
+};
 
 const onError = error => {
   if (error.syscall !== "listen") {
