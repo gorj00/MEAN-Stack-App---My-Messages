@@ -18,10 +18,11 @@ router.post('', (req, res, next) => {
   });
 });
 
-// OUT => /api/posts/:id
+// PUT => /api/posts/:id
 router.put('/:id', (req, res, next) => {
   const post = new Post({
-    _id: req.body.id, // without it new Post() creates new id, which is not allowed
+    _id: req.body.id,
+    // without it new Post() creates new id, which is not allowed
     title: req.body.title,
     content: req.body.content
   });
@@ -49,7 +50,7 @@ router.get('', (req, res, next) => {
 
 // GET => /api/posts/:id
 router.get('/:id', (req, res, next) => {
-  Post.findById(req.param.id).then(post => {
+  Post.findById(req.params.id).then(post => {
     if (post) {
       res.status(200).json(post);
     } else {
