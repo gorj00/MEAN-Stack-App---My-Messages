@@ -1,4 +1,4 @@
-// 5.1. to play
+// 5.8 to play
 const express = require('express');
 // Extracting body when using POST method
 const bodyParser = require('body-parser');
@@ -49,6 +49,20 @@ app.post('/api/posts', (req, res, next) => {
       postId: createdPost._id
     });
   });
+});
+
+app.put('/api/posts/:id', (req, res, next) => {
+  const post = new Post({
+    _id: req.body.id, // without it new Post() creates new id, which is not allowed
+    title: req.body.title,
+    content: req.body.content
+  });
+  Post.updateOne({ _id: req.params.id }, post)
+    .then(result => {
+      console.log(result);
+      res.status(200).json({ message: 'Update successful!' });
+    })
+    .catch(error => console.log(error));
 });
 
 app.get('/api/posts', (req, res, next) => {
