@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 // Database connection
 const mongoose = require('mongoose');
+const password = require('./password.config');
 
 const postRoutes = require('./routes/posts.routes');
 
@@ -11,7 +12,7 @@ const app = express();
 
 mongoose
   .connect(
-    'mongodb+srv://gorj00:***REMOVED***@nodecluster-remtm.mongodb.net/mean_stack?retryWrites=true&w=majority'
+    'mongodb+srv://gorj00:' + password + '@nodecluster-remtm.mongodb.net/mean_stack?retryWrites=true&w=majority'
   )
   .then(() => {
     console.log('Connected to database!');
