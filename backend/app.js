@@ -1,4 +1,4 @@
-// 5.9 to play
+// 6.5 to play
 const express = require('express');
 // Extracting body when using POST method
 const bodyParser = require('body-parser');
