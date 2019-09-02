@@ -1,22 +1,53 @@
 const express =  require('express');
 const Post = require('../models/post.model');
+// Files extraction
+const multer = require('multer');
 
 const router = express.Router();
 
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'png',
+  'image/jpg': 'png',
+  'image/gif': 'gif',
+}
+
+const fileStorage = multer.diskStorage({
+  // where to save
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error('Invalid mime type');
+    if (isValid) {
+      error = null;
+    }
+    // error and path relative to server.js
+    cb(error, './backend/images');
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalName;
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + '-' + Date.now() + '.' + ext);
+  }
+ });
+
 // POST => /api/posts
-router.post('', (req, res, next) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content
-  });
-  // Mongoose save to mongoDB
-  post.save().then(createdPost => {
-    res.status(201).json({
-      message: 'Post added successfully',
-      postId: createdPost._id
+router.post(
+  '',
+  multer({ storage: fileStorage }).single('image'),
+  (req, res, next) => {
+    const post = new Post({
+      title: req.body.title,
+      content: req.body.content
     });
-  });
-});
+    // Mongoose save to mongoDB
+    post.save().then(createdPost => {
+      res.status(201).json({
+        message: 'Post added successfully',
+        postId: createdPost._id
+      });
+    });
+  }
+);
 
 // PUT => /api/posts/:id
 router.put('/:id', (req, res, next) => {
